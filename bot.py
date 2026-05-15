@@ -114,6 +114,16 @@ async def handle_appeal(message: Message):
             f"🆔 ID: {message.from_user.id}\n"
             f"🔗 Username: @{message.from_user.username if message.from_user.username else 'yo‘q'}"
         )
+        # Google Sheets ga yozish
+sheet.append_row([
+    appeal_id,
+    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    mode,
+    message.from_user.full_name if not is_anonymous else "Anonim",
+    f"@{message.from_user.username}" if message.from_user.username else "yo'q",
+    str(message.from_user.id),
+    "Yangi"
+])
 
     caption = (
         f"📩 Yangi murojaat #{appeal_id}\n\n"

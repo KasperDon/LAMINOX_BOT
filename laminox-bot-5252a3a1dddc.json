@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "laminox-bot",
+  "private_key_id": "5252a3a1dddc388179c030959aba2dd9ea4ba674",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDd73zUbZwlGLhb\nAfABS6hQPVuyUbAP0CzTPrOdn5MtqYazsXimKqoDudfiUIX1DnoVMw3RmxG28n5p\nH9ZWmmQGIdMZb2EdnY0fxa9lvJiq2DQ8dHpGe25twyTsjfFsubIqRHtlMRJ54Nsl\nqdJbZggTLh21/ZpUkaIYtACjvTZ3KGVB1js36A8kvVQytz2KYrTaSDC3uHoBYWpM\nJZijNvbodJjGZhwM1y4YrxU03g0R5iCTrxEwjjGpJJX9izGks3XBO9zS2d6T810S\nI8uDZXPJoT1bFo58WEs6XpLNyQ1iIa/pXLwRy8a9Mfe52sCYFoFjZ7Wt4+iEWC8R\nkA2eB+ETAgMBAAECggEAAL68bWFaVl+qdmlzDmj3WuKTTYUGxsl7BQsytTM6kLNj\n+w8Hkn5jefCay52CltRWx3ZCMDVseOBpE4jBijnzR80zqZKbQbD/uounNypEFnTs\nekXX1QCH1i29P0CKb4IsY1Oa1Q0miDK6w09ZQwe+Zs1a8AcfdRrUe0jHiYcgCulc\nAiMHEsO3msuf8b13kA5HHq41W0ETi5Uu8oRFJMTKv4MOHnNt017LgSDQuQmEMC9N\nBxlbjwC/Q+IzI6+7eJDx6j5cLCK328+T47rxYctrUiXtK9PwpblpGA/bwNRwte0r\n2zYEyD56Pz6knGkm3+kYcYrCYgS5Wzk7mMXuSVtYQQKBgQDuZKP+UVBwDSPg/Lie\nN6eiV5YPnRqfKHBRaNUSk5WrD37KkLjl0HxE92+aWpTHJiwT6Qx/u6uvubhlmMZJ\nVP2c4gErNt/FxOb+EdYGE2QXvXK/YRYQAEQXjjnHDABrUgpKSwOPsrTO+IXy9FRj\nyFkLkA5vub3v+GBlxUrpmiXkUwKBgQDuU62u1g14GS784Rr0E9rmqUZ+G8mvsum+\n9J7lEy2SycNfnKX/M0tQLSnu/fjv4iGbBNaWCzoq4vtMHczsDdsMyI4J50/xO1DF\nJEBrG+V54v44hQFwitsQaPEphYMSgEhgyK55MgaeLieTj98qeg882GJMgY39i0PJ\nAkgaftZ4QQKBgDOXViJIqLbHMTeUmcOr2bx5ZgFVB5jgIIaNwGb3x5EwlkjyTwF1\nQB+QyPdHmSEMMsfQTKMsEzjBYZWjHW5rVUNpacVXZ9AeD7t2UrIX6jZ1Cms+cI7f\n79yFLB3WjBStuYpgd5HWo+iSwjJVDBpYFmU5NNabBO70+q+rpc2uTXr/AoGAdxIZ\nmVtaeWFjp3Y0CDQPTuTN0l3Bw2WJAR2ocVzGjSr+0Lsr+DfBbfpSlBQRlpANKC0f\npPFRC3JCCUJuSpWVlmpxBKOrviNbdFNrV9glK2NsjgJtuLO3RRiZPJx24vxyrOA2\nw1hqFAeNQF1GKyu2hzi4y+6CaWV15WydZ5dtQcECgYABoQW2ARgsf5mJf8w3IRm1\nGfVA//uQ1+nk2nROkCU3NmqW6NjDIdojH/0Rdj5kJbU4Kx/NdiqmGljvIWJ+Ol/x\ngKStgrN8G6MqJ8Be2SDGYKhPOldmMfx60Z7HlY2guwt52ngT2/nxuSgPw+w84XFc\nCY/CV5lbXFOdYFd1+Ss3Eg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "laminox-bot@laminox-bot.iam.gserviceaccount.com",
+  "client_id": "104115458846923493093",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/laminox-bot%40laminox-bot.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -12,7 +12,7 @@ TOKEN = "8786703693:AAGZeTKd9HH6VwzqztIeEzATShmdyXS8rqI"
 ADMIN_IDS = [6696030788]
 
 DATA_FILE = "appeals.json"
-GOOGLE_JSON_FILE = "laminox-bot-628ed4ca1fef.json"
+GOOGLE_JSON_FILE = "laminox-bot-5252a3a1dddc.json"
 SHEET_NAME = "LAMINOX Murojaatlar Bazasi"
 
 bot = Bot(token=TOKEN)

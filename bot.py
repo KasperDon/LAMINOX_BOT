@@ -11,7 +11,7 @@ import json
 import os
 from datetime import datetime
 
-TOKEN = "TOKENINGIZNI_QOYING"
+TOKEN = "8786703693:AAGZeTKd9HH6VwzqztIeEzATShmdyXS8rqI"
 
 ADMIN_IDS = [6696030788]
 

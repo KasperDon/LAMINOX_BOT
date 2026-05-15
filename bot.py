@@ -108,31 +108,39 @@ async def handle_appeal(message: Message):
 
     if is_anonymous:
         user_info = "🔒 Anonim murojaat"
+        full_name = "Anonim"
+        username = "Anonim"
+        telegram_id = "Anonim"
     else:
-        user_info = (
-            f"👤 Ism: {message.from_user.full_name}\n"
-            f"🆔 ID: {message.from_user.id}\n"
-            f"🔗 Username: @{message.from_user.username if message.from_user.username else 'yo‘q'}"
-        )
-        # Google Sheets ga yozish
-sheet.append_row([
-    appeal_id,
-    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    mode,
-    message.from_user.full_name if not is_anonymous else "Anonim",
-    f"@{message.from_user.username}" if message.from_user.username else "yo'q",
-    str(message.from_user.id),
-    "Yangi"
-])
+        full_name = message.from_user.full_name
+        username = f"@{message.from_user.username}" if message.from_user.username else "yo'q"
+        telegram_id = str(message.from_user.id)
 
-caption = (
-    f"📩 Yangi murojaat #{appeal_id}\n\n"
-    f"📌 Turi: {mode}\n"
-    f"{user_info}\n\n"
-    f"🕒 Vaqt: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n"
-)
+        user_info = (
+            f"👤 Ism: {full_name}\n"
+            f"🆔 ID: {telegram_id}\n"
+            f"🔗 Username: {username}"
+        )
 
     text_content = message.text or message.caption or "Media/fayl yuborildi"
+
+    sheet.append_row([
+        appeal_id,
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        mode,
+        full_name,
+        username,
+        telegram_id,
+        text_content,
+        "Yangi"
+    ])
+
+    caption = (
+        f"📩 Yangi murojaat #{appeal_id}\n\n"
+        f"📌 Turi: {mode}\n"
+        f"{user_info}\n\n"
+        f"🕒 Vaqt: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n"
+    )
 
     save_appeal({
         "id": appeal_id,

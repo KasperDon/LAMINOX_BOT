@@ -126,11 +126,11 @@ sheet.append_row([
 ])
 
 caption = (
-        f"📩 Yangi murojaat #{appeal_id}\n\n"
-        f"📌 Turi: {mode}\n"
-        f"{user_info}\n\n"
-        f"🕒 Vaqt: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n"
-    )
+    f"📩 Yangi murojaat #{appeal_id}\n\n"
+    f"📌 Turi: {mode}\n"
+    f"{user_info}\n\n"
+    f"🕒 Vaqt: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n"
+)
 
     text_content = message.text or message.caption or "Media/fayl yuborildi"
 

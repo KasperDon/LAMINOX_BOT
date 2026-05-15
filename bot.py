@@ -125,7 +125,7 @@ sheet.append_row([
     "Yangi"
 ])
 
-    caption = (
+caption = (
         f"📩 Yangi murojaat #{appeal_id}\n\n"
         f"📌 Turi: {mode}\n"
         f"{user_info}\n\n"

@@ -12,7 +12,6 @@ TOKEN = "8786703693:AAGZeTKd9HH6VwzqztIeEzATShmdyXS8rqI"
 ADMIN_IDS = [6696030788]
 
 DATA_FILE = "appeals.json"
-GOOGLE_JSON_FILE = "laminox-bot-5252a3a1dddc.json"
 SHEET_NAME = "LAMINOX Murojaatlar Bazasi"
 
 bot = Bot(token=TOKEN)
@@ -23,7 +22,8 @@ SCOPES = [
     "https://www.googleapis.com/auth/drive"
 ]
 
-creds = Credentials.from_service_account_file(GOOGLE_JSON_FILE, scopes=SCOPES)
+google_credentials = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+creds = Credentials.from_service_account_info(google_credentials, scopes=SCOPES)
 client = gspread.authorize(creds)
 sheet = client.open(SHEET_NAME).sheet1
 
@@ -84,9 +84,11 @@ async def choose_type(message: Message):
     if message.text == "📌 Shikoyat":
         user_modes[message.from_user.id] = "Shikoyat"
         await message.answer("📌 Shikoyatingizni matn, rasm, ovozli xabar yoki fayl ko‘rinishida yuboring.")
+
     elif message.text == "💡 Taklif":
         user_modes[message.from_user.id] = "Taklif"
         await message.answer("💡 Taklifingizni matn, rasm, ovozli xabar yoki fayl ko‘rinishida yuboring.")
+
     elif message.text == "🔒 Anonim murojaat":
         user_modes[message.from_user.id] = "Anonim"
         await message.answer("🔒 Anonim murojaatingizni yuboring. Ismingiz adminlarga ko‘rsatilmaydi.")

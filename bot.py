@@ -8,6 +8,8 @@ from aiogram.types import (
 import asyncio
 import json
 import os
+import gspread
+from google.oauth2.service_account import Credentials
 from datetime import datetime
 
 TOKEN = "8786703693:AAGZeTKd9HH6VwzqztIeEzATShmdyXS8rqI"
@@ -19,6 +21,20 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 DATA_FILE = "appeals.json"
+# Google Sheets ulanish
+SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+
+creds = Credentials.from_service_account_file(
+    "laminox-bot-628ed4ca1fef.json",
+    scopes=SCOPES
+)
+
+client = gspread.authorize(creds)
+
+sheet = client.open("LAMINOX Murojaatlar Bazasi").sheet1
 
 menu = ReplyKeyboardMarkup(
     keyboard=[

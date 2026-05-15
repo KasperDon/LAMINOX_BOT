@@ -1,10 +1,6 @@
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
-from aiogram.types import (
-    Message,
-    ReplyKeyboardMarkup,
-    KeyboardButton
-)
+from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 import asyncio
 import json
 import os
@@ -13,28 +9,23 @@ from google.oauth2.service_account import Credentials
 from datetime import datetime
 
 TOKEN = "8786703693:AAGZeTKd9HH6VwzqztIeEzATShmdyXS8rqI"
-
-# Adminlar ID ro‘yxati
 ADMIN_IDS = [6696030788]
+
+DATA_FILE = "appeals.json"
+GOOGLE_JSON_FILE = "laminox-bot-628ed4ca1fef.json"
+SHEET_NAME = "LAMINOX Murojaatlar Bazasi"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-DATA_FILE = "appeals.json"
-# Google Sheets ulanish
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
 ]
 
-creds = Credentials.from_service_account_file(
-    "laminox-bot-628ed4ca1fef.json",
-    scopes=SCOPES
-)
-
+creds = Credentials.from_service_account_file(GOOGLE_JSON_FILE, scopes=SCOPES)
 client = gspread.authorize(creds)
-
-sheet = client.open("LAMINOX Murojaatlar Bazasi").sheet1
+sheet = client.open(SHEET_NAME).sheet1
 
 menu = ReplyKeyboardMarkup(
     keyboard=[
@@ -50,8 +41,11 @@ user_modes = {}
 def load_appeals():
     if not os.path.exists(DATA_FILE):
         return []
-    with open(DATA_FILE, "r", encoding="utf-8") as file:
-        return json.load(file)
+    try:
+        with open(DATA_FILE, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except Exception:
+        return []
 
 
 def save_appeal(data):
@@ -103,19 +97,17 @@ async def handle_appeal(message: Message):
     user_id = message.from_user.id
     mode = user_modes.get(user_id, "Oddiy murojaat")
     appeal_id = next_appeal_id()
-
     is_anonymous = mode == "Anonim"
 
     if is_anonymous:
-        user_info = "🔒 Anonim murojaat"
         full_name = "Anonim"
         username = "Anonim"
         telegram_id = "Anonim"
+        user_info = "🔒 Anonim murojaat"
     else:
         full_name = message.from_user.full_name
         username = f"@{message.from_user.username}" if message.from_user.username else "yo'q"
         telegram_id = str(message.from_user.id)
-
         user_info = (
             f"👤 Ism: {full_name}\n"
             f"🆔 ID: {telegram_id}\n"
@@ -123,10 +115,11 @@ async def handle_appeal(message: Message):
         )
 
     text_content = message.text or message.caption or "Media/fayl yuborildi"
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     sheet.append_row([
         appeal_id,
-        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        now,
         mode,
         full_name,
         username,
@@ -135,13 +128,6 @@ async def handle_appeal(message: Message):
         "Yangi"
     ])
 
-    caption = (
-        f"📩 Yangi murojaat #{appeal_id}\n\n"
-        f"📌 Turi: {mode}\n"
-        f"{user_info}\n\n"
-        f"🕒 Vaqt: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n"
-    )
-
     save_appeal({
         "id": appeal_id,
         "type": mode,
@@ -149,16 +135,20 @@ async def handle_appeal(message: Message):
         "username": None if is_anonymous else message.from_user.username,
         "full_name": None if is_anonymous else message.from_user.full_name,
         "text": text_content,
-        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "time": now,
         "status": "Yangi"
     })
 
+    caption = (
+        f"📩 Yangi murojaat #{appeal_id}\n\n"
+        f"📌 Turi: {mode}\n"
+        f"{user_info}\n\n"
+        f"🕒 Vaqt: {now}\n"
+    )
+
     for admin_id in ADMIN_IDS:
         if message.text:
-            await bot.send_message(
-                admin_id,
-                caption + f"\n📝 Xabar:\n{message.text}"
-            )
+            await bot.send_message(admin_id, caption + f"\n📝 Xabar:\n{message.text}")
 
         elif message.photo:
             await bot.send_photo(
@@ -189,10 +179,7 @@ async def handle_appeal(message: Message):
             )
 
         else:
-            await bot.send_message(
-                admin_id,
-                caption + "\n📎 Boshqa turdagi xabar yuborildi."
-            )
+            await bot.send_message(admin_id, caption + "\n📎 Boshqa turdagi xabar yuborildi.")
 
     await message.answer(
         f"✅ Murojaatingiz qabul qilindi.\n"

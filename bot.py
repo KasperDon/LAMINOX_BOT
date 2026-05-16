@@ -3,17 +3,24 @@ from aiogram.filters import CommandStart
 from aiogram.types import (
     Message,
     ReplyKeyboardMarkup,
-    KeyboardButton
+    KeyboardButton,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    CallbackQuery
 )
+from aiogram.exceptions import TelegramBadRequest
 
 import asyncio
 import json
 import os
 from datetime import datetime
 
-TOKEN = "8786703693:AAGZeTKd9HH6VwzqztIeEzATShmdyXS8rqI"
+TOKEN = "8786703693:AAEqccYnogp7tPXtfRoJN-ereEQR-phkNmk"
 
 ADMIN_IDS = [6696030788]
+
+CHANNEL_USERNAME = "@laminox"
+CHANNEL_LINK = "https://t.me/laminox"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
@@ -28,7 +35,32 @@ menu = ReplyKeyboardMarkup(
     resize_keyboard=True
 )
 
+subscribe_menu = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text="📢 Kanalga obuna bo‘lish", url=CHANNEL_LINK)],
+        [InlineKeyboardButton(text="✅ Obunani tekshirish", callback_data="check_sub")]
+    ]
+)
+
 user_modes = {}
+
+
+async def is_subscribed(user_id: int) -> bool:
+    try:
+        member = await bot.get_chat_member(CHANNEL_USERNAME, user_id)
+        return member.status in ["member", "administrator", "creator"]
+    except TelegramBadRequest:
+        return False
+
+
+async def require_subscribe(message: Message) -> bool:
+    if not await is_subscribed(message.from_user.id):
+        await message.answer(
+            "🔒 Murojaat yuborish uchun avval kanalimizga obuna bo‘ling.",
+            reply_markup=subscribe_menu
+        )
+        return False
+    return True
 
 
 def load_appeals():
@@ -54,6 +86,9 @@ def next_appeal_id():
 
 @dp.message(CommandStart())
 async def start(message: Message):
+    if not await require_subscribe(message):
+        return
+
     await message.answer(
         "Assalomu alaykum!\n\n"
         "🏢 LAMINOX Murojaat Markaziga xush kelibsiz.\n\n"
@@ -62,8 +97,28 @@ async def start(message: Message):
     )
 
 
+@dp.callback_query(F.data == "check_sub")
+async def check_sub(callback: CallbackQuery):
+    if not await is_subscribed(callback.from_user.id):
+        await callback.answer(
+            "❌ Siz hali kanalga obuna bo‘lmagansiz.",
+            show_alert=True
+        )
+        return
+
+    await callback.message.answer(
+        "✅ Obuna tasdiqlandi.\n\n"
+        "Endi murojaat turini tanlang:",
+        reply_markup=menu
+    )
+    await callback.answer()
+
+
 @dp.message(F.text == "🏢 LAMINOX haqida")
 async def about(message: Message):
+    if not await require_subscribe(message):
+        return
+
     await message.answer(
         "🏢 LAMINOX Murojaat Markazi\n\n"
         "Bu yerda siz shikoyat, taklif yoki fikringizni yuborishingiz mumkin."
@@ -72,31 +127,26 @@ async def about(message: Message):
 
 @dp.message(F.text.in_(["📌 Shikoyat", "💡 Taklif", "🔒 Anonim murojaat"]))
 async def choose_type(message: Message):
+    if not await require_subscribe(message):
+        return
 
     if message.text == "📌 Shikoyat":
         user_modes[message.from_user.id] = "Shikoyat"
-
-        await message.answer(
-            "📌 Shikoyatingizni yuboring."
-        )
+        await message.answer("📌 Shikoyatingizni yuboring.")
 
     elif message.text == "💡 Taklif":
         user_modes[message.from_user.id] = "Taklif"
-
-        await message.answer(
-            "💡 Taklifingizni yuboring."
-        )
+        await message.answer("💡 Taklifingizni yuboring.")
 
     elif message.text == "🔒 Anonim murojaat":
         user_modes[message.from_user.id] = "Anonim"
-
-        await message.answer(
-            "🔒 Anonim murojaatingizni yuboring."
-        )
+        await message.answer("🔒 Anonim murojaatingizni yuboring.")
 
 
 @dp.message()
 async def handle_appeal(message: Message):
+    if not await require_subscribe(message):
+        return
 
     user_id = message.from_user.id
     mode = user_modes.get(user_id, "Oddiy murojaat")
@@ -106,7 +156,6 @@ async def handle_appeal(message: Message):
 
     if is_anonymous:
         user_info = "🔒 Anonim murojaat"
-
     else:
         user_info = (
             f"👤 Ism: {message.from_user.full_name}\n"
@@ -132,46 +181,23 @@ async def handle_appeal(message: Message):
     )
 
     for admin_id in ADMIN_IDS:
-
         if message.text:
-            await bot.send_message(
-                admin_id,
-                caption + f"\n\n📝 Xabar:\n{message.text}"
-            )
+            await bot.send_message(admin_id, caption + f"\n\n📝 Xabar:\n{message.text}")
 
         elif message.photo:
-            await bot.send_photo(
-                admin_id,
-                message.photo[-1].file_id,
-                caption=caption
-            )
+            await bot.send_photo(admin_id, message.photo[-1].file_id, caption=caption)
 
         elif message.video:
-            await bot.send_video(
-                admin_id,
-                message.video.file_id,
-                caption=caption
-            )
+            await bot.send_video(admin_id, message.video.file_id, caption=caption)
 
         elif message.document:
-            await bot.send_document(
-                admin_id,
-                message.document.file_id,
-                caption=caption
-            )
+            await bot.send_document(admin_id, message.document.file_id, caption=caption)
 
         elif message.voice:
-            await bot.send_voice(
-                admin_id,
-                message.voice.file_id,
-                caption=caption
-            )
+            await bot.send_voice(admin_id, message.voice.file_id, caption=caption)
 
         else:
-            await bot.send_message(
-                admin_id,
-                caption + "\n📎 Media yuborildi"
-            )
+            await bot.send_message(admin_id, caption + "\n📎 Media yuborildi")
 
     await message.answer(
         f"✅ Murojaatingiz qabul qilindi.\n"

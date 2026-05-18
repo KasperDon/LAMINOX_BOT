@@ -18,7 +18,7 @@ from zoneinfo import ZoneInfo
 
 TOKEN = "8786703693:AAEqccYnogp7tPXtfRoJN-ereEQR-phkNmk"
 
-ADMIN_IDS = [6696030788] [1269188869]
+ADMIN_IDS = [6696030788, 1269188869]
 
 CHANNEL_USERNAME = "@laminox"
 CHANNEL_LINK = "https://t.me/laminox"

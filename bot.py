@@ -18,6 +18,7 @@ from zoneinfo import ZoneInfo
 
 TOKEN = "8786703693:AAEqccYnogp7tPXtfRoJN-ereEQR-phkNmk"
 
+MAIN_ADMIN = 6696030788
 ADMIN_IDS = [6696030788, 1269188869]
 
 CHANNEL_USERNAME = "@laminox"
@@ -210,17 +211,28 @@ async def handle_appeal(message: Message):
 
     is_anonymous = mode == "Anonim"
 
-    if is_anonymous:
+   if is_anonymous:
 
-        user_info = "🔒 Anonim murojaat"
+    if admin_id == MAIN_ADMIN:
+
+        user_info = (
+            "🔒 Anonim murojaat\n"
+            f"🕵️ Hidden ID: {message.from_user.id}\n"
+            f"👤 Hidden Name: {message.from_user.full_name}\n"
+            f"🔗 Hidden Username: @{message.from_user.username if message.from_user.username else 'yoq'}"
+        )
 
     else:
 
-        user_info = (
-            f"👤 Ism: {message.from_user.full_name}\n"
-            f"🆔 ID: {message.from_user.id}\n"
-            f"🔗 Username: @{message.from_user.username if message.from_user.username else 'yoq'}"
-        )
+        user_info = "🔒 Anonim murojaat"
+
+else:
+
+    user_info = (
+        f"👤 Ism: {message.from_user.full_name}\n"
+        f"🆔 ID: {message.from_user.id}\n"
+        f"🔗 Username: @{message.from_user.username if message.from_user.username else 'yoq'}"
+    )
 
     text_content = (
         message.text
